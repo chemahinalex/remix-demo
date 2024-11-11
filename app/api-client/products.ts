@@ -4,12 +4,12 @@ import {ApiResponse, ApiProduct, ApiOptions, ApiPayload} from './types';
 //
 //
 
-export type apiProductsListPayload = ApiOptions;
-export type apiProductsListResponse = ApiResponse<ApiProduct[]>;
+export type ApiProductsListPayload = ApiOptions;
+export type ApiProductsListResponse = ApiResponse<ApiProduct[]>;
 
-export const apiProductsList = async ({options}: apiProductsListPayload = {}) => {
+export const apiProductsList = async ({options}: ApiProductsListPayload = {}) => {
   try {
-    return await apiClient.get('v1/products/', options).json<apiProductsListResponse>();
+    return await apiClient.get('v1/products/', options).json<ApiProductsListResponse>();
   } catch (err) {
     return handleApiError(err);
   }
@@ -17,12 +17,12 @@ export const apiProductsList = async ({options}: apiProductsListPayload = {}) =>
 
 //
 
-export type apiProductsGetPayload = {id: string} & ApiOptions;
-export type apiProductsGetResponse = ApiResponse<ApiProduct>;
+export type ApiProductsGetPayload = {id: string} & ApiOptions;
+export type ApiProductsGetResponse = ApiResponse<ApiProduct>;
 
-export const apiProductsGet = async ({id, options}: apiProductsGetPayload) => {
+export const apiProductsGet = async ({id, options}: ApiProductsGetPayload) => {
   try {
-    return await apiClient.get('v1/products/' + id, options).json<apiProductsGetResponse>();
+    return await apiClient.get('v1/products/' + id, options).json<ApiProductsGetResponse>();
   } catch (err) {
     return handleApiError(err);
   }
@@ -30,15 +30,15 @@ export const apiProductsGet = async ({id, options}: apiProductsGetPayload) => {
 
 //
 
-export type apiProductsCreatePayload = ApiPayload<
+export type ApiProductsCreatePayload = ApiPayload<
   Omit<ApiProduct, 'productId' | 'userId' | 'createdAt' | 'updatedAt'>
 >;
-export type apiProductsCreateResponse = apiProductsGetResponse;
+export type ApiProductsCreateResponse = ApiProductsGetResponse;
 
-export const apiProductsCreate = async ({payload, options}: apiProductsCreatePayload) => {
+export const apiProductsCreate = async ({payload, options}: ApiProductsCreatePayload) => {
   try {
     return await apiClient
-      .post<apiProductsCreateResponse>('v1/products/', {json: payload, ...options})
+      .post<ApiProductsCreateResponse>('v1/products/', {json: payload, ...options})
       .json();
   } catch (err) {
     return handleApiError(err);
@@ -47,15 +47,15 @@ export const apiProductsCreate = async ({payload, options}: apiProductsCreatePay
 
 //
 
-export type apiProductsUpdatePayload = {id: string} & ApiPayload<
-  Partial<apiProductsCreatePayload['payload']>
+export type ApiProductsUpdatePayload = {id: string} & ApiPayload<
+  Partial<ApiProductsCreatePayload['payload']>
 >;
-export type apiProductsUpdateResponse = apiProductsGetResponse;
+export type ApiProductsUpdateResponse = ApiProductsGetResponse;
 
-export const apiProductsUpdate = async ({id, payload, options}: apiProductsUpdatePayload) => {
+export const apiProductsUpdate = async ({id, payload, options}: ApiProductsUpdatePayload) => {
   try {
     return await apiClient
-      .patch<apiProductsUpdateResponse>('v1/products/' + id, {json: payload, ...options})
+      .patch<ApiProductsUpdateResponse>('v1/products/' + id, {json: payload, ...options})
       .json();
   } catch (err) {
     return handleApiError(err);
@@ -64,12 +64,12 @@ export const apiProductsUpdate = async ({id, payload, options}: apiProductsUpdat
 
 //
 
-export type apiProductsDeletePayload = apiProductsGetPayload;
-export type apiProductsDeleteResponse = apiProductsGetResponse;
+export type ApiProductsDeletePayload = ApiProductsGetPayload;
+export type ApiProductsDeleteResponse = ApiProductsGetResponse;
 
-export const apiProductsDelete = async ({id, options}: apiProductsDeletePayload) => {
+export const apiProductsDelete = async ({id, options}: ApiProductsDeletePayload) => {
   try {
-    return await apiClient.delete<apiProductsDeleteResponse>('v1/products/' + id, options).json();
+    return await apiClient.delete<ApiProductsDeleteResponse>('v1/products/' + id, options).json();
   } catch (err) {
     return handleApiError(err);
   }

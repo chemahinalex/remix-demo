@@ -13,7 +13,7 @@ import {ApiProduct} from '~/api-client/types';
 
 type ProductsTableRowProps = {row: ApiProduct; doDeleteItem: (item: ApiProduct) => void};
 
-export const ProductsTableRow: React.FC<ProductsTableRowProps> = ({
+export const ProductsTableRow = ({
   row,
   doDeleteItem,
 }: ProductsTableRowProps) => {
@@ -46,7 +46,7 @@ export const ProductsTableRow: React.FC<ProductsTableRowProps> = ({
       </TableCell>
       <TableCell align="right">
         <Box>
-          <Box>${Number(row.price).toLocaleString() || '---'}</Box>
+          <Box>{'$' + Number(row.price).toLocaleString() || '---'}</Box>
           <Typography variant="caption" color="textDisabled">
             {row?.priceSale ? '$' + Number(row.priceSale).toLocaleString() : '---'}
           </Typography>

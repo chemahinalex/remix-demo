@@ -1,7 +1,7 @@
-import ky, {HTTPError, KyRequest} from 'ky';
+import ky, { HTTPError, KyRequest } from 'ky';
 
 import {ApiAuth, ApiResponse} from './types';
-import {apiClearTokens, apiSaveTokens} from './utils/tokens';
+import {apiClearTokens, apiSaveTokens, getAccessToken, getRefreshToken, isAccessTokenExpired, isRefreshTokenExpired} from './utils/tokens';
 
 //
 //
@@ -43,28 +43,21 @@ const errorHandler = async (error: HTTPError) => {
 const tokenInterceptor = async (request: KyRequest) => {
   if (request.headers.get('x-target') === 'refresh-token') return;
 
-  const currentToken = window.localStorage.getItem('_at');
+  const currentToken = getAccessToken();
 
   if (!currentToken) return;
 
-  const currentTokenExpires = window.localStorage.getItem('_ate');
-  const currentTokenExpired = currentTokenExpires && new Date(currentTokenExpires) < new Date();
-
-  if (!currentTokenExpired) {
+  if (!isAccessTokenExpired()) {
     request.headers.set('Authorization', `Bearer ${currentToken}`);
 
     return;
   }
 
-  const currentRefresh = window.localStorage.getItem('_rt');
+  const currentRefresh = getRefreshToken();
 
   if (!currentRefresh) return;
 
-  const currentRefreshExpires = window.localStorage.getItem('_rte');
-  const currentRefreshExpired =
-    currentRefreshExpires && new Date(currentRefreshExpires) < new Date();
-
-  if (currentRefreshExpired) {
+  if (isRefreshTokenExpired()) {
     apiClearTokens();
 
     return;
@@ -73,8 +66,8 @@ const tokenInterceptor = async (request: KyRequest) => {
   try {
     const result = await apiClient
       .post('auth/refresh-token', {
-        json: {token: currentRefresh},
-        headers: {'x-target': 'refresh-token'},
+        json: { token: currentRefresh },
+        headers: { 'x-target': 'refresh-token' },
       })
       .json<ApiResponse<ApiAuth>>();
 

@@ -2,17 +2,17 @@ import {createMutation, createQuery} from 'react-query-kit';
 
 import {
   apiProfileGet,
-  apiProfileGetPayload,
-  apiProfileGetResponse,
+  ApiProfileGetPayload,
+  ApiProfileGetResponse,
   apiProfileUpdate,
-  apiProfileUpdatePayload,
-  apiProfileUpdateResponse,
+  ApiProfileUpdatePayload,
+  ApiProfileUpdateResponse,
   apiSignIn,
-  apiSignInPayload,
-  apiSignInResponse,
+  ApiSignInPayload,
+  ApiSignInResponse,
   apiSignUp,
-  apiSignUpPayload,
-  apiSignUpResponse,
+  ApiSignUpPayload,
+  ApiSignUpResponse,
 } from '~/api-client';
 
 import {queryClient} from './client';
@@ -20,17 +20,14 @@ import {queryClient} from './client';
 //
 //
 
-export const useQueryProfile = createQuery<apiProfileGetResponse, apiProfileGetPayload>({
+export const useQueryProfile = createQuery<ApiProfileGetResponse, ApiProfileGetPayload>({
   queryKey: ['profile'],
   fetcher: params => apiProfileGet(params),
 });
 
 //
 
-export const useMutationProfileUpdate = createMutation<
-  apiProfileUpdateResponse,
-  apiProfileUpdatePayload
->({
+export const useMutationProfileUpdate = createMutation<ApiProfileUpdateResponse, ApiProfileUpdatePayload>({
   mutationKey: ['profile'],
   mutationFn: params => apiProfileUpdate(params),
   onSuccess: async data => await queryClient.setQueryData(['profile'], data),
@@ -38,7 +35,7 @@ export const useMutationProfileUpdate = createMutation<
 
 //
 
-export const useMutationSignIn = createMutation<apiSignInResponse, apiSignInPayload>({
+export const useMutationSignIn = createMutation<ApiSignInResponse, ApiSignInPayload>({
   mutationKey: ['signIn'],
   mutationFn: params => apiSignIn(params),
   onSuccess: async data => await queryClient.setQueryData(['profile'], data),
@@ -46,7 +43,7 @@ export const useMutationSignIn = createMutation<apiSignInResponse, apiSignInPayl
 
 //
 
-export const useMutationSignUp = createMutation<apiSignUpResponse, apiSignUpPayload>({
+export const useMutationSignUp = createMutation<ApiSignUpResponse, ApiSignUpPayload>({
   mutationKey: ['signUp'],
   mutationFn: params => apiSignUp(params),
 });

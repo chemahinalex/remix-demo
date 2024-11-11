@@ -13,7 +13,7 @@ import {ApiCategory} from '~/api-client/types';
 
 type CategoriesTableRowProps = {row: ApiCategory; doDeleteItem: (item: ApiCategory) => void};
 
-export const CategoriesTableRow: React.FC<CategoriesTableRowProps> = ({
+export const CategoriesTableRow = ({
   row,
   doDeleteItem,
 }: CategoriesTableRowProps) => {

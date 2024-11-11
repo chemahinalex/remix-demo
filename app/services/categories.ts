@@ -2,20 +2,20 @@ import {createMutation, createQuery} from 'react-query-kit';
 
 import {
   apiCategoriesCreate,
-  apiCategoriesCreatePayload,
-  apiCategoriesCreateResponse,
+  ApiCategoriesCreatePayload,
+  ApiCategoriesCreateResponse,
   apiCategoriesDelete,
-  apiCategoriesDeletePayload,
-  apiCategoriesDeleteResponse,
+  ApiCategoriesDeletePayload,
+  ApiCategoriesDeleteResponse,
   apiCategoriesGet,
-  apiCategoriesGetPayload,
-  apiCategoriesGetResponse,
+  ApiCategoriesGetPayload,
+  ApiCategoriesGetResponse,
   apiCategoriesList,
-  apiCategoriesListPayload,
-  apiCategoriesListResponse,
+  ApiCategoriesListPayload,
+  ApiCategoriesListResponse,
   apiCategoriesUpdate,
-  apiCategoriesUpdatePayload,
-  apiCategoriesUpdateResponse,
+  ApiCategoriesUpdatePayload,
+  ApiCategoriesUpdateResponse,
 } from '~/api-client/categories';
 
 import {queryClient} from './client';
@@ -32,28 +32,23 @@ const refetchListNoCache = async () =>
 
 //
 
-export const useQueryCategoriesList = createQuery<
-  apiCategoriesListResponse,
-  apiCategoriesListPayload | undefined
->({
+export const useQueryCategoriesList = createQuery<ApiCategoriesListResponse, ApiCategoriesListPayload | undefined>({
   queryKey: [key],
   fetcher: params => apiCategoriesList(params),
 });
 
 //
 
-export const useQueryCategoriesGet = createQuery<apiCategoriesGetResponse, apiCategoriesGetPayload>(
-  {
-    queryKey: [key],
-    fetcher: params => apiCategoriesGet(params),
-  },
-);
+export const useQueryCategoriesGet = createQuery<ApiCategoriesGetResponse, ApiCategoriesGetPayload>({
+  queryKey: [key],
+  fetcher: params => apiCategoriesGet(params),
+});
 
 //
 
 export const useMutationCategoriesCreate = createMutation<
-  apiCategoriesCreateResponse,
-  apiCategoriesCreatePayload
+  ApiCategoriesCreateResponse,
+  ApiCategoriesCreatePayload
 >({
   mutationKey: [key + 'Create'],
   mutationFn: params => apiCategoriesCreate(params),
@@ -63,8 +58,8 @@ export const useMutationCategoriesCreate = createMutation<
 //
 
 export const useMutationCategoriesUpdate = createMutation<
-  apiCategoriesUpdateResponse,
-  apiCategoriesUpdatePayload
+  ApiCategoriesUpdateResponse,
+  ApiCategoriesUpdatePayload
 >({
   mutationKey: [key + 'Update'],
   mutationFn: params => apiCategoriesUpdate(params),
@@ -74,8 +69,8 @@ export const useMutationCategoriesUpdate = createMutation<
 //
 
 export const useMutationCategoriesDelete = createMutation<
-  apiCategoriesDeleteResponse,
-  apiCategoriesDeletePayload
+  ApiCategoriesDeleteResponse,
+  ApiCategoriesDeletePayload
 >({
   mutationKey: [key + 'Delete'],
   mutationFn: params => apiCategoriesDelete(params),

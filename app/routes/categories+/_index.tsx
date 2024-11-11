@@ -8,6 +8,7 @@ import {useQueryCategoriesList} from '~/services/categories';
 
 import {SkeletonOnLoading} from '~/global/components/skeleton-on-loading';
 import {AppButton} from '~/global/components/app-button';
+import {getAccessToken} from '~/api-client/utils/tokens';
 
 import {CategoriesTable} from './components/table';
 
@@ -18,7 +19,7 @@ export const handle = {i18n: ['common', 'categories']};
 export const meta: MetaFunction = () => [{title: 'Remix App - Categories'}];
 
 export const clientLoader = async () => {
-  if (!window.localStorage.getItem('_at')) return redirect('/');
+  if (!getAccessToken()) return redirect('/');
 
   return null;
 };

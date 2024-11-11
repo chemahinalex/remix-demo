@@ -12,14 +12,12 @@ interface ClientCacheProviderProps {
   children: React.ReactNode;
 }
 
-export const ClientCacheProvider: React.FC<ClientCacheProviderProps> = ({
-  children,
-}: ClientCacheProviderProps) => {
+export const ClientCacheProvider = ({children}: ClientCacheProviderProps) => {
   const {i18n} = useTranslation();
   const dir = i18n.dir();
 
   const currentDir = useRef(dir);
-  const [cache, setCache] = useState(createEmotionCache(dir));
+  const [cache, setCache] = useState(() => createEmotionCache(dir));
 
   const clientStyleContextValue = useMemo(
     () => ({

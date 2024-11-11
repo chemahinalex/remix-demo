@@ -13,8 +13,8 @@ export const languagesSupported = [...languages];
 //
 
 export const resources: Record<Language, Resource> = {
-  en,
-  ar,
+  en: en as Resource,
+  ar: ar as Resource,
 };
 
 //

@@ -1,14 +1,11 @@
-import {useTranslation} from 'react-i18next';
 import type {MetaFunction} from '@remix-run/node';
-
+import {useTranslation} from 'react-i18next';
 import {Grid2, Typography} from '@mui/material';
 
 import {useQueryProfile} from '~/services/auth';
-
 import {AppLink} from '~/global/components/app-link';
-
 import {ApiResponse, ApiUser} from '~/api-client/types';
-
+import {getAccessToken} from '~/api-client/utils/tokens';
 //
 //
 
@@ -19,7 +16,8 @@ export const meta: MetaFunction = () => [{title: 'Remix App'}];
 
 export default function Index() {
   const {t} = useTranslation();
-  const {data} = useQueryProfile({enabled: !!window.localStorage.getItem('_at')});
+  const isAuthenticated = !!getAccessToken();
+  const {data} = useQueryProfile<ApiResponse<ApiUser>>({enabled: isAuthenticated});
 
   return (
     <Grid2

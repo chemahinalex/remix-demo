@@ -1,24 +1,26 @@
 import {apiClient, handleApiError} from './client';
 import {ApiAuth, ApiOptions, ApiPayload, ApiResponse, ApiUser} from './types';
 
-//
-//
 
-export type apiSignInPayload = ApiPayload<{email: string; password: string}>;
-export type apiSignInResponse = ApiResponse<ApiAuth>;
+type ApiSignInObject = {
+  email: string;
+  password: string;
+};
 
-export const apiSignIn = async ({payload, options}: apiSignInPayload) => {
+export type ApiSignInPayload = ApiPayload<ApiSignInObject>;
+export type ApiSignInResponse = ApiResponse<ApiAuth>;
+
+export const apiSignIn = async ({payload, options}: ApiSignInPayload) => {
   try {
     return await apiClient
       .post('auth/signin/', {json: payload, ...options})
-      .json<apiSignInResponse>();
+      .json<ApiSignInResponse>();
   } catch (err) {
     return handleApiError(err);
   }
 };
 
-//
-type apiSignUpObject = {
+type ApiSignUpObject = {
   name: string;
   email: string;
   mobile: string;
@@ -26,43 +28,40 @@ type apiSignUpObject = {
   passwordConfirm: string;
 };
 
-export type apiSignUpPayload = ApiPayload<apiSignUpObject>;
-export type apiSignUpResponse = ApiResponse<ApiAuth>;
+export type ApiSignUpPayload = ApiPayload<ApiSignUpObject>;
+export type ApiSignUpResponse = ApiResponse<ApiAuth>;
 
-export const apiSignUp = async ({payload, options}: apiSignUpPayload) => {
+export const apiSignUp = async ({payload, options}: ApiSignUpPayload) => {
   try {
     return await apiClient
-      .post<apiSignUpResponse>('auth/signup/', {json: payload, ...options})
-      .json();
+      .post('auth/signup/', {json: payload, ...options})
+      .json<ApiSignUpResponse>();
   } catch (err) {
     return handleApiError(err);
   }
 };
 
-//
 
-export type apiProfileGetPayload = ApiOptions;
-export type apiProfileGetResponse = ApiResponse<ApiUser>;
+export type ApiProfileGetPayload = ApiOptions;
+export type ApiProfileGetResponse = ApiResponse<ApiUser>;
 
-export const apiProfileGet = async ({options}: apiProfileGetPayload = {}) => {
+export const apiProfileGet = async ({options}: ApiProfileGetPayload = {}) => {
   try {
     return await apiClient
       .get('auth/profile/', {cache: 'default', ...options})
-      .json<apiProfileGetResponse>();
+      .json<ApiProfileGetResponse>();
   } catch (err) {
     return handleApiError(err);
   }
 };
 
-//
+export type ApiProfileUpdatePayload = ApiPayload<Partial<ApiSignUpObject>>;
+export type ApiProfileUpdateResponse = ApiResponse<ApiUser>;
 
-export type apiProfileUpdatePayload = ApiPayload<Partial<apiSignUpObject>>;
-export type apiProfileUpdateResponse = ApiResponse<ApiUser>;
-
-export const apiProfileUpdate = async ({payload, options}: apiProfileUpdatePayload) => {
+export const apiProfileUpdate = async ({payload, options}: ApiProfileUpdatePayload) => {
   try {
     return await apiClient
-      .patch<apiProfileUpdateResponse>('auth/profile/', {
+      .patch('auth/profile/', {
         json: {
           ...payload,
           password: payload.password || undefined,
@@ -70,7 +69,7 @@ export const apiProfileUpdate = async ({payload, options}: apiProfileUpdatePaylo
         },
         ...options,
       })
-      .json();
+      .json<ApiProfileUpdateResponse>();
   } catch (err) {
     return handleApiError(err);
   }

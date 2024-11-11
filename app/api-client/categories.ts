@@ -4,12 +4,12 @@ import {ApiResponse, ApiCategory, ApiOptions, ApiPayload} from './types';
 //
 //
 
-export type apiCategoriesListPayload = ApiOptions;
-export type apiCategoriesListResponse = ApiResponse<ApiCategory[]>;
+export type ApiCategoriesListPayload = ApiOptions;
+export type ApiCategoriesListResponse = ApiResponse<ApiCategory[]>;
 
-export const apiCategoriesList = async ({options}: apiCategoriesListPayload = {}) => {
+export const apiCategoriesList = async ({options}: ApiCategoriesListPayload = {}) => {
   try {
-    return await apiClient.get('v1/categories/', options).json<apiCategoriesListResponse>();
+    return await apiClient.get('v1/categories/', options).json<ApiCategoriesListResponse>();
   } catch (err) {
     return handleApiError(err);
   }
@@ -17,12 +17,12 @@ export const apiCategoriesList = async ({options}: apiCategoriesListPayload = {}
 
 //
 
-export type apiCategoriesGetPayload = {id: string} & ApiOptions;
-export type apiCategoriesGetResponse = ApiResponse<ApiCategory>;
+export type ApiCategoriesGetPayload = {id: string} & ApiOptions;
+export type ApiCategoriesGetResponse = ApiResponse<ApiCategory>;
 
-export const apiCategoriesGet = async ({id, options}: apiCategoriesGetPayload) => {
+export const apiCategoriesGet = async ({id, options}: ApiCategoriesGetPayload) => {
   try {
-    return await apiClient.get('v1/categories/' + id, options).json<apiCategoriesGetResponse>();
+    return await apiClient.get('v1/categories/' + id, options).json<ApiCategoriesGetResponse>();
   } catch (err) {
     return handleApiError(err);
   }
@@ -30,16 +30,16 @@ export const apiCategoriesGet = async ({id, options}: apiCategoriesGetPayload) =
 
 //
 
-export type apiCategoriesCreatePayload = ApiPayload<
+export type ApiCategoriesCreatePayload = ApiPayload<
   Omit<ApiCategory, 'categoryId' | 'userId' | 'createdAt' | 'updatedAt'>
 >;
-export type apiCategoriesCreateResponse = apiCategoriesGetResponse;
+export type ApiCategoriesCreateResponse = ApiCategoriesGetResponse;
 
-export const apiCategoriesCreate = async ({payload, options}: apiCategoriesCreatePayload) => {
+export const apiCategoriesCreate = async ({payload, options}: ApiCategoriesCreatePayload) => {
   try {
     return await apiClient
-      .post<apiCategoriesCreateResponse>('v1/categories/', {json: payload, ...options})
-      .json();
+      .post('v1/categories/', {json: payload, ...options})
+      .json<ApiCategoriesCreateResponse>();
   } catch (err) {
     return handleApiError(err);
   }
@@ -47,16 +47,16 @@ export const apiCategoriesCreate = async ({payload, options}: apiCategoriesCreat
 
 //
 
-export type apiCategoriesUpdatePayload = {id: string} & ApiPayload<
-  Partial<apiCategoriesCreatePayload['payload']>
+export type ApiCategoriesUpdatePayload = {id: string} & ApiPayload<
+  Partial<ApiCategoriesCreatePayload['payload']>
 >;
-export type apiCategoriesUpdateResponse = apiCategoriesGetResponse;
+export type ApiCategoriesUpdateResponse = ApiCategoriesGetResponse;
 
-export const apiCategoriesUpdate = async ({id, payload, options}: apiCategoriesUpdatePayload) => {
+export const apiCategoriesUpdate = async ({id, payload, options}: ApiCategoriesUpdatePayload) => {
   try {
     return await apiClient
-      .patch<apiCategoriesUpdateResponse>('v1/categories/' + id, {json: payload, ...options})
-      .json();
+      .patch('v1/categories/' + id, {json: payload, ...options})
+      .json<ApiCategoriesUpdateResponse>();
   } catch (err) {
     return handleApiError(err);
   }
@@ -64,14 +64,14 @@ export const apiCategoriesUpdate = async ({id, payload, options}: apiCategoriesU
 
 //
 
-export type apiCategoriesDeletePayload = apiCategoriesGetPayload;
-export type apiCategoriesDeleteResponse = apiCategoriesGetResponse;
+export type ApiCategoriesDeletePayload = ApiCategoriesGetPayload;
+export type ApiCategoriesDeleteResponse = ApiCategoriesGetResponse;
 
-export const apiCategoriesDelete = async ({id, options}: apiCategoriesDeletePayload) => {
+export const apiCategoriesDelete = async ({id, options}: ApiCategoriesDeletePayload) => {
   try {
     return await apiClient
-      .delete<apiCategoriesDeleteResponse>('v1/categories/' + id, options)
-      .json();
+      .delete('v1/categories/' + id, options)
+      .json<ApiCategoriesDeleteResponse>();
   } catch (err) {
     return handleApiError(err);
   }

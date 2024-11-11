@@ -3,14 +3,13 @@ import {Form, redirect} from '@remix-run/react';
 import {useForm, FormProvider} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {useTranslation} from 'react-i18next';
-import {useSnackbar} from 'notistack';
+import {useSnackbar, VariantType} from 'notistack';
 import * as yup from 'yup';
 
 import {useMutationProductsCreate} from '~/services/products';
-
 import {useI18nNavigate} from '~/global/hooks/use-i18n-navigate';
-
 import {PageShell} from '~/global/components/page-shell';
+import {getAccessToken} from '~/api-client/utils/tokens';
 
 import {ProductsForm} from './components/form';
 
@@ -18,10 +17,10 @@ import {ProductsForm} from './components/form';
 //
 
 export const handle = {i18n: ['common', 'products']};
-export const meta: MetaFunction = () => [{title: 'Remix App - Create a category'}];
+export const meta: MetaFunction = () => [{title: 'Remix App - Create a product'}];
 
 export const clientLoader = async () => {
-  if (!window.localStorage.getItem('_at')) {
+  if (!getAccessToken()) {
     return redirect('/');
   }
 
@@ -79,13 +78,9 @@ export default function ProductsCreate() {
     const response = await mutate.mutateAsync({payload});
 
     if (response?.errors?.length) {
-      enqueueSnackbar({
-        heading: response?.meta?.message,
-        messages: response?.errors,
-        variant: 'error',
-      });
+      enqueueSnackbar(response.meta?.message, {variant: 'error' as VariantType});
     } else if (response?.result?.productId) {
-      enqueueSnackbar({messages: response.meta?.message, variant: 'success'});
+      enqueueSnackbar(response.meta?.message, {variant: 'success' as VariantType});
       navigate('/products', {viewTransition: true});
     }
   });

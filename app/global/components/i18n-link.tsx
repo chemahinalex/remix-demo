@@ -1,13 +1,13 @@
 import {Link, LinkProps} from '@remix-run/react';
-import {memo} from 'react';
+import {forwardRef} from 'react';
 import {useTranslation} from 'react-i18next';
 
 //
 
-export const I18nLink: React.FC<LinkProps> = memo((props: LinkProps & LinkProps) => {
+export const I18nLink = forwardRef<HTMLAnchorElement, LinkProps>((props: LinkProps, ref) => {
   const {i18n} = useTranslation();
 
-  return <Link {...props} to={parseI18nNavigate(props.to, i18n.language)} />;
+  return <Link ref={ref} {...props} to={parseI18nNavigate(props.to, i18n.language)} />;
 });
 
 I18nLink.displayName = 'I18nLink';

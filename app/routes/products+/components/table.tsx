@@ -1,5 +1,5 @@
 import {useTranslation} from 'react-i18next';
-import {useSnackbar} from 'notistack';
+import {useSnackbar, VariantType} from 'notistack';
 
 import {Paper, Table, TableBody, TableContainer} from '@mui/material';
 
@@ -15,8 +15,9 @@ import {ProductsTableRowSkeleton} from './table-row-skeleton';
 
 //
 //
+type ProductsTableProps = {data?: ApiProduct[]; isLoading: boolean};
 
-export const ProductsTable = ({data, isLoading}: {data?: ApiProduct[]; isLoading: boolean}) => {
+export const ProductsTable = ({data, isLoading}: ProductsTableProps) => {
   const {t} = useTranslation(['common']);
   const {enqueueSnackbar} = useSnackbar();
   const deleteItem = useMutationProductsDelete();
@@ -30,10 +31,10 @@ export const ProductsTable = ({data, isLoading}: {data?: ApiProduct[]; isLoading
       {id: item.productId},
       {
         onSuccess: async result => {
-          result?.meta?.message && enqueueSnackbar(result?.meta?.message, {variant: 'success'});
+          result?.meta?.message && enqueueSnackbar(result.meta.message, {variant: 'success' as VariantType});
         },
         onError: err => {
-          enqueueSnackbar(err?.message || 'unknown error', {variant: 'error'});
+          enqueueSnackbar(err?.message || 'unknown error', {variant: 'error' as VariantType});
         },
       },
     );
@@ -52,7 +53,7 @@ export const ProductsTable = ({data, isLoading}: {data?: ApiProduct[]; isLoading
           ) : !data?.length ? (
             <TableRowEmpty actionURL="/products/create" colSpan={4} />
           ) : (
-            data?.map(row => (
+            data.map((row: ApiProduct) => (
               <ProductsTableRow key={row.productId} row={row} doDeleteItem={doDeleteItem} />
             ))
           )}

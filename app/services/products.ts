@@ -2,20 +2,20 @@ import {createMutation, createQuery} from 'react-query-kit';
 
 import {
   apiProductsCreate,
-  apiProductsCreatePayload,
-  apiProductsCreateResponse,
+  ApiProductsCreatePayload,
+  ApiProductsCreateResponse,
   apiProductsDelete,
-  apiProductsDeletePayload,
-  apiProductsDeleteResponse,
+  ApiProductsDeletePayload,
+  ApiProductsDeleteResponse,
   apiProductsGet,
-  apiProductsGetPayload,
-  apiProductsGetResponse,
+  ApiProductsGetPayload,
+  ApiProductsGetResponse,
   apiProductsList,
-  apiProductsListPayload,
-  apiProductsListResponse,
+  ApiProductsListPayload,
+  ApiProductsListResponse,
   apiProductsUpdate,
-  apiProductsUpdatePayload,
-  apiProductsUpdateResponse,
+  ApiProductsUpdatePayload,
+  ApiProductsUpdateResponse,
 } from '~/api-client/products';
 
 import {queryClient} from './client';
@@ -33,8 +33,8 @@ const refetchListNoCache = async () =>
 //
 
 export const useQueryProductsList = createQuery<
-  apiProductsListResponse,
-  apiProductsListPayload | undefined
+  ApiProductsListResponse,
+  ApiProductsListPayload | undefined
 >({
   queryKey: [key],
   fetcher: params => apiProductsList(params),
@@ -42,7 +42,7 @@ export const useQueryProductsList = createQuery<
 
 //
 
-export const useQueryProductsGet = createQuery<apiProductsGetResponse, apiProductsGetPayload>({
+export const useQueryProductsGet = createQuery<ApiProductsGetResponse, ApiProductsGetPayload>({
   queryKey: [key],
   fetcher: params => apiProductsGet(params),
 });
@@ -50,8 +50,8 @@ export const useQueryProductsGet = createQuery<apiProductsGetResponse, apiProduc
 //
 
 export const useMutationProductsCreate = createMutation<
-  apiProductsCreateResponse,
-  apiProductsCreatePayload
+  ApiProductsCreateResponse,
+  ApiProductsCreatePayload
 >({
   mutationKey: [key + 'Create'],
   mutationFn: params => apiProductsCreate(params),
@@ -61,8 +61,8 @@ export const useMutationProductsCreate = createMutation<
 //
 
 export const useMutationProductsUpdate = createMutation<
-  apiProductsUpdateResponse,
-  apiProductsUpdatePayload
+  ApiProductsUpdateResponse,
+  ApiProductsUpdatePayload
 >({
   mutationKey: [key + 'Update'],
   mutationFn: params => apiProductsUpdate(params),
@@ -72,8 +72,8 @@ export const useMutationProductsUpdate = createMutation<
 //
 
 export const useMutationProductsDelete = createMutation<
-  apiProductsDeleteResponse,
-  apiProductsDeletePayload
+  ApiProductsDeleteResponse,
+  ApiProductsDeletePayload
 >({
   mutationKey: [key + 'Delete'],
   mutationFn: params => apiProductsDelete(params),

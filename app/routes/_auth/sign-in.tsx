@@ -1,7 +1,7 @@
 import type {MetaFunction} from '@remix-run/node';
 import {Form, redirect, useNavigate} from '@remix-run/react';
 import {useTranslation} from 'react-i18next';
-import {useSnackbar} from 'notistack';
+import {useSnackbar, VariantType} from 'notistack';
 import * as yup from 'yup';
 import {useForm, FormProvider} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
@@ -12,7 +12,7 @@ import {PageShell} from '~/global/components/page-shell';
 import {AppInputPassword} from '~/global/components/app-input-password';
 import {AppInput} from '~/global/components/app-input';
 
-import {apiSaveTokens} from '~/api-client/utils/tokens';
+import {apiSaveTokens, getAccessToken} from '~/api-client/utils/tokens';
 
 //
 //
@@ -21,7 +21,8 @@ export const handle = {i18n: ['common', 'auth']};
 export const meta: MetaFunction = () => [{title: 'Remix App - Sign In'}];
 
 export const clientLoader = async () => {
-  if (window.localStorage.getItem('_at')) return redirect('/');
+  const isAuthenticated = !!getAccessToken();
+  if (isAuthenticated) return redirect('/');
 
   return null;
 };
@@ -54,16 +55,12 @@ export default function SignIn() {
     const response = await mutate.mutateAsync({payload});
 
     if (response?.errors?.length) {
-      enqueueSnackbar({
-        heading: response?.meta?.message,
-        messages: response?.errors,
-        variant: 'error',
+      enqueueSnackbar(response.meta?.message, {
+        variant: 'error' as VariantType,
       });
     } else if (response?.result?.accessToken?.token) {
-      enqueueSnackbar({
-        heading: 'Signed in successfully',
-        messages: `Welcome back, ${response.result.user?.name}`,
-        variant: 'success',
+      enqueueSnackbar(`Welcome back, ${response.result.user?.name}`, {
+        variant: 'success' as VariantType,
       });
       apiSaveTokens(response);
       navigate('/', {replace: true, viewTransition: true});

@@ -1,4 +1,5 @@
 import {useQueryProfile} from '~/services/auth';
+import {getAccessToken} from '~/api-client/utils/tokens';
 
 import {HeaderNavbarUnauthenticated} from './unauthenticated';
 import {HeaderNavbarSkeleton} from './skeleton';
@@ -8,7 +9,8 @@ import {HeaderNavbarAuthenticated} from './authenticated';
 //
 
 export const HeaderNavbarLinks = () => {
-  const {data, isLoading} = useQueryProfile({enabled: !!window.localStorage.getItem('_at')});
+  const isAuthenticated = !!getAccessToken();
+  const {data, isLoading} = useQueryProfile({enabled: isAuthenticated});
 
   if (isLoading) return <HeaderNavbarSkeleton />;
 

@@ -2,9 +2,8 @@ import type {MetaFunction} from '@remix-run/node';
 import {Form, redirect, useLoaderData} from '@remix-run/react';
 import {useForm, FormProvider} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
-import {useMutation} from '@tanstack/react-query';
 import {useTranslation} from 'react-i18next';
-import {useSnackbar} from 'notistack';
+import {useSnackbar, VariantType} from 'notistack';
 import * as yup from 'yup';
 
 import {queryClient} from '~/services/client';
@@ -13,6 +12,8 @@ import {useQueryProfile, useMutationProfileUpdate} from '~/services/auth';
 import {PageShell} from '~/global/components/page-shell';
 import {AppInputPassword} from '~/global/components/app-input-password';
 import {AppInput} from '~/global/components/app-input';
+import { getAccessToken } from '~/api-client/utils/tokens';
+import { R } from 'node_modules/vite/dist/node/types.d-aGj9QkWt';
 
 //
 //
@@ -21,7 +22,7 @@ export const handle = {i18n: ['common', 'auth']};
 export const meta: MetaFunction = () => [{title: 'Remix App - Profile'}];
 
 export const clientLoader = async () => {
-  if (!window.localStorage.getItem('_at')) {
+  if (!getAccessToken()) {
     return redirect('/');
   }
 
@@ -63,13 +64,13 @@ export default function Profile() {
     const response = await mutate.mutateAsync({payload});
 
     if (response?.errors?.length) {
-      enqueueSnackbar({
-        heading: response?.meta?.message,
-        messages: response?.errors,
-        variant: 'error',
+      enqueueSnackbar(response.meta?.message, {
+        variant: 'error' as VariantType,
       });
     } else if (response?.result?.userId) {
-      enqueueSnackbar({messages: 'Profile updated successfully', variant: 'success'});
+      enqueueSnackbar('Profile updated successfully', {
+        variant: 'success' as VariantType,
+      });
     }
   });
 
